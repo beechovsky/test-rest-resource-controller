@@ -23,6 +23,7 @@ class StudentController {
     }
 
     def save(Student student) {
+        log.trace "HIT SAVE METHOD IN STUDENT CONTROLLER"
         if (student == null) {
             notFound()
             return
