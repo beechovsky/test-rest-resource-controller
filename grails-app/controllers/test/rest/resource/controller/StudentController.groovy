@@ -1,9 +1,15 @@
 package test.rest.resource.controller
 
+import grails.rest.RestfulController
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
 
-class StudentController {
+//https://docs.grails.org/latest/guide/REST.html#extendingRestfulController
+class StudentController extends RestfulController<Student> {
+    static responseFormats = ['json', 'xml']
+    StudentController() {
+        super(Student)
+    }
 
     StudentService studentService
 
