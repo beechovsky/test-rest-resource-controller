@@ -2,7 +2,7 @@ package test.rest.resource.controller
 
 import grails.rest.Resource
 
-@Resource(uri="/books")
+@Resource(uri="/students")
 class Student {
 
     String firstName
