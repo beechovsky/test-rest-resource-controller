@@ -7,37 +7,37 @@ import org.hibernate.SessionFactory
 
 @Integration
 @Rollback
-class PersonServiceSpec extends Specification {
+class StudentServiceSpec extends Specification {
 
-    PersonService personService
+    StudentService studentService
     SessionFactory sessionFactory
 
     private Long setupData() {
         // TODO: Populate valid domain instances and return a valid ID
-        //new Person(...).save(flush: true, failOnError: true)
-        //new Person(...).save(flush: true, failOnError: true)
-        //Person person = new Person(...).save(flush: true, failOnError: true)
-        //new Person(...).save(flush: true, failOnError: true)
-        //new Person(...).save(flush: true, failOnError: true)
+        //new Student(...).save(flush: true, failOnError: true)
+        //new Student(...).save(flush: true, failOnError: true)
+        //Student student = new Student(...).save(flush: true, failOnError: true)
+        //new Student(...).save(flush: true, failOnError: true)
+        //new Student(...).save(flush: true, failOnError: true)
         assert false, "TODO: Provide a setupData() implementation for this generated test suite"
-        //person.id
+        //student.id
     }
 
     void "test get"() {
         setupData()
 
         expect:
-        personService.get(1) != null
+        studentService.get(1) != null
     }
 
     void "test list"() {
         setupData()
 
         when:
-        List<Person> personList = personService.list(max: 2, offset: 2)
+        List<Student> studentList = studentService.list(max: 2, offset: 2)
 
         then:
-        personList.size() == 2
+        studentList.size() == 2
         assert false, "TODO: Verify the correct instances are returned"
     }
 
@@ -45,30 +45,30 @@ class PersonServiceSpec extends Specification {
         setupData()
 
         expect:
-        personService.count() == 5
+        studentService.count() == 5
     }
 
     void "test delete"() {
-        Long personId = setupData()
+        Long studentId = setupData()
 
         expect:
-        personService.count() == 5
+        studentService.count() == 5
 
         when:
-        personService.delete(personId)
+        studentService.delete(studentId)
         sessionFactory.currentSession.flush()
 
         then:
-        personService.count() == 4
+        studentService.count() == 4
     }
 
     void "test save"() {
         when:
         assert false, "TODO: Provide a valid instance to save"
-        Person person = new Person()
-        personService.save(person)
+        Student student = new Student()
+        studentService.save(student)
 
         then:
-        person.id != null
+        student.id != null
     }
 }

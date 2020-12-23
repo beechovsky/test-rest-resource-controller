@@ -5,7 +5,7 @@ import grails.testing.web.controllers.ControllerUnitTest
 import grails.validation.ValidationException
 import spock.lang.*
 
-class PersonControllerSpec extends Specification implements ControllerUnitTest<PersonController>, DomainUnitTest<Person> {
+class StudentControllerSpec extends Specification implements ControllerUnitTest<StudentController>, DomainUnitTest<Student> {
 
     def populateValidParams(params) {
         assert params != null
@@ -17,7 +17,7 @@ class PersonControllerSpec extends Specification implements ControllerUnitTest<P
 
     void "Test the index action returns the correct model"() {
         given:
-        controller.personService = Mock(PersonService) {
+        controller.studentService = Mock(StudentService) {
             1 * list(_) >> []
             1 * count() >> 0
         }
@@ -26,8 +26,8 @@ class PersonControllerSpec extends Specification implements ControllerUnitTest<P
         controller.index()
 
         then:"The model is correct"
-        !model.personList
-        model.personCount == 0
+        !model.studentList
+        model.studentCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -35,7 +35,7 @@ class PersonControllerSpec extends Specification implements ControllerUnitTest<P
         controller.create()
 
         then:"The model is correctly created"
-        model.person!= null
+        model.student!= null
     }
 
     void "Test the save action with a null instance"() {
@@ -45,14 +45,14 @@ class PersonControllerSpec extends Specification implements ControllerUnitTest<P
         controller.save(null)
 
         then:"A 404 error is returned"
-        response.redirectedUrl == '/person/index'
+        response.redirectedUrl == '/student/index'
         flash.message != null
     }
 
     void "Test the save action correctly persists"() {
         given:
-        controller.personService = Mock(PersonService) {
-            1 * save(_ as Person)
+        controller.studentService = Mock(StudentService) {
+            1 * save(_ as Student)
         }
 
         when:"The save action is executed with a valid instance"
@@ -60,38 +60,38 @@ class PersonControllerSpec extends Specification implements ControllerUnitTest<P
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'POST'
         populateValidParams(params)
-        def person = new Person(params)
-        person.id = 1
+        def student = new Student(params)
+        student.id = 1
 
-        controller.save(person)
+        controller.save(student)
 
         then:"A redirect is issued to the show action"
-        response.redirectedUrl == '/person/show/1'
+        response.redirectedUrl == '/student/show/1'
         controller.flash.message != null
     }
 
     void "Test the save action with an invalid instance"() {
         given:
-        controller.personService = Mock(PersonService) {
-            1 * save(_ as Person) >> { Person person ->
-                throw new ValidationException("Invalid instance", person.errors)
+        controller.studentService = Mock(StudentService) {
+            1 * save(_ as Student) >> { Student student ->
+                throw new ValidationException("Invalid instance", student.errors)
             }
         }
 
         when:"The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'POST'
-        def person = new Person()
-        controller.save(person)
+        def student = new Student()
+        controller.save(student)
 
         then:"The create view is rendered again with the correct model"
-        model.person != null
+        model.student != null
         view == 'create'
     }
 
     void "Test the show action with a null id"() {
         given:
-        controller.personService = Mock(PersonService) {
+        controller.studentService = Mock(StudentService) {
             1 * get(null) >> null
         }
 
@@ -104,20 +104,20 @@ class PersonControllerSpec extends Specification implements ControllerUnitTest<P
 
     void "Test the show action with a valid id"() {
         given:
-        controller.personService = Mock(PersonService) {
-            1 * get(2) >> new Person()
+        controller.studentService = Mock(StudentService) {
+            1 * get(2) >> new Student()
         }
 
         when:"A domain instance is passed to the show action"
         controller.show(2)
 
         then:"A model is populated containing the domain instance"
-        model.person instanceof Person
+        model.student instanceof Student
     }
 
     void "Test the edit action with a null id"() {
         given:
-        controller.personService = Mock(PersonService) {
+        controller.studentService = Mock(StudentService) {
             1 * get(null) >> null
         }
 
@@ -130,15 +130,15 @@ class PersonControllerSpec extends Specification implements ControllerUnitTest<P
 
     void "Test the edit action with a valid id"() {
         given:
-        controller.personService = Mock(PersonService) {
-            1 * get(2) >> new Person()
+        controller.studentService = Mock(StudentService) {
+            1 * get(2) >> new Student()
         }
 
         when:"A domain instance is passed to the show action"
         controller.edit(2)
 
         then:"A model is populated containing the domain instance"
-        model.person instanceof Person
+        model.student instanceof Student
     }
 
 
@@ -149,14 +149,14 @@ class PersonControllerSpec extends Specification implements ControllerUnitTest<P
         controller.update(null)
 
         then:"A 404 error is returned"
-        response.redirectedUrl == '/person/index'
+        response.redirectedUrl == '/student/index'
         flash.message != null
     }
 
     void "Test the update action correctly persists"() {
         given:
-        controller.personService = Mock(PersonService) {
-            1 * save(_ as Person)
+        controller.studentService = Mock(StudentService) {
+            1 * save(_ as Student)
         }
 
         when:"The save action is executed with a valid instance"
@@ -164,31 +164,31 @@ class PersonControllerSpec extends Specification implements ControllerUnitTest<P
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'PUT'
         populateValidParams(params)
-        def person = new Person(params)
-        person.id = 1
+        def student = new Student(params)
+        student.id = 1
 
-        controller.update(person)
+        controller.update(student)
 
         then:"A redirect is issued to the show action"
-        response.redirectedUrl == '/person/show/1'
+        response.redirectedUrl == '/student/show/1'
         controller.flash.message != null
     }
 
     void "Test the update action with an invalid instance"() {
         given:
-        controller.personService = Mock(PersonService) {
-            1 * save(_ as Person) >> { Person person ->
-                throw new ValidationException("Invalid instance", person.errors)
+        controller.studentService = Mock(StudentService) {
+            1 * save(_ as Student) >> { Student student ->
+                throw new ValidationException("Invalid instance", student.errors)
             }
         }
 
         when:"The save action is executed with an invalid instance"
         request.contentType = FORM_CONTENT_TYPE
         request.method = 'PUT'
-        controller.update(new Person())
+        controller.update(new Student())
 
         then:"The edit view is rendered again with the correct model"
-        model.person != null
+        model.student != null
         view == 'edit'
     }
 
@@ -199,13 +199,13 @@ class PersonControllerSpec extends Specification implements ControllerUnitTest<P
         controller.delete(null)
 
         then:"A 404 is returned"
-        response.redirectedUrl == '/person/index'
+        response.redirectedUrl == '/student/index'
         flash.message != null
     }
 
     void "Test the delete action with an instance"() {
         given:
-        controller.personService = Mock(PersonService) {
+        controller.studentService = Mock(StudentService) {
             1 * delete(2)
         }
 
@@ -215,7 +215,7 @@ class PersonControllerSpec extends Specification implements ControllerUnitTest<P
         controller.delete(2)
 
         then:"The user is redirected to index"
-        response.redirectedUrl == '/person/index'
+        response.redirectedUrl == '/student/index'
         flash.message != null
     }
 }

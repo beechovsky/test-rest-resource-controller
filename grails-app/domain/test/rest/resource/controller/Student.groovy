@@ -1,8 +1,12 @@
 package test.rest.resource.controller
 
-class Person {
+import grails.rest.Resource
+
+@Resource(uri='/students')
+class Student {
 
     String firstName
+    String lastName
     Integer age
 
     static constraints = {

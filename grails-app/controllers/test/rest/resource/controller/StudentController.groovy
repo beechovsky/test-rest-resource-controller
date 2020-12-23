@@ -1,74 +1,72 @@
 package test.rest.resource.controller
 
-import grails.rest.RestfulController
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
 
+class StudentController {
 
-class PersonController {
-
-    PersonService personService
+    StudentService studentService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond personService.list(params), model:[personCount: personService.count()]
+        respond studentService.list(params), model:[studentCount: studentService.count()]
     }
 
     def show(Long id) {
-        respond personService.get(id)
+        respond studentService.get(id)
     }
 
     def create() {
-        respond new Person(params)
+        respond new Student(params)
     }
 
-    def save(Person person) {
-        if (person == null) {
+    def save(Student student) {
+        if (student == null) {
             notFound()
             return
         }
 
         try {
-            personService.save(person)
+            studentService.save(student)
         } catch (ValidationException e) {
-            respond person.errors, view:'create'
+            respond student.errors, view:'create'
             return
         }
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'person.label', default: 'Person'), person.id])
-                redirect person
+                flash.message = message(code: 'default.created.message', args: [message(code: 'student.label', default: 'Student'), student.id])
+                redirect student
             }
-            '*' { respond person, [status: CREATED] }
+            '*' { respond student, [status: CREATED] }
         }
     }
 
     def edit(Long id) {
-        respond personService.get(id)
+        respond studentService.get(id)
     }
 
-    def update(Person person) {
-        if (person == null) {
+    def update(Student student) {
+        if (student == null) {
             notFound()
             return
         }
 
         try {
-            personService.save(person)
+            studentService.save(student)
         } catch (ValidationException e) {
-            respond person.errors, view:'edit'
+            respond student.errors, view:'edit'
             return
         }
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'person.label', default: 'Person'), person.id])
-                redirect person
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'student.label', default: 'Student'), student.id])
+                redirect student
             }
-            '*'{ respond person, [status: OK] }
+            '*'{ respond student, [status: OK] }
         }
     }
 
@@ -78,11 +76,11 @@ class PersonController {
             return
         }
 
-        personService.delete(id)
+        studentService.delete(id)
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'person.label', default: 'Person'), id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'student.label', default: 'Student'), id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
@@ -92,7 +90,7 @@ class PersonController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'person.label', default: 'Person'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'student.label', default: 'Student'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }
