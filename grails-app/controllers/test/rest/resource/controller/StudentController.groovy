@@ -15,6 +15,7 @@ class StudentController {
     }
 
     def show(Long id) {
+        log.trace "HIT SHOW METHOD IN STUDENT CONTROLLER"
         respond studentService.get(id)
     }
 
